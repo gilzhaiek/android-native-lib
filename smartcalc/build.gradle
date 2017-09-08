@@ -1,0 +1,73 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+    androidTestCompile 'com.android.support.test:rules:0.5'
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 26
+
+        testApplicationId "com.protech.mix.test"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            externalNativeBuild {
+                cmake { cppFlags "" }
+            }
+        }
+        debug {
+            jniDebuggable true
+
+            externalNativeBuild {
+                cmake { cppFlags "-DDEBUG" }
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake { path "CMakeLists.txt" }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = 'com.protech.mix'
+        pom.artifactId = 'smartCalc'
+        pom.version = '1.0b'
+
+        repository(url: "file://localhost/Users/gilzhaiek/.m2/repository")
+    }
+}
