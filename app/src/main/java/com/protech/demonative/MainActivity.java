@@ -15,9 +15,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     TextView tvResult;
-    Button btnCalcDumb, btnCalcSmart;
+    Button btnCalcDumb, btnCalcSmart, btnFibSmart;
     EditText etX, etY;
-    SmartCalc smartCalc = new SmartCalc();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCalcDumb.setOnClickListener(this);
         btnCalcSmart = (Button) findViewById(R.id.btn_smart_add);
         btnCalcSmart.setOnClickListener(this);
+        btnFibSmart = (Button) findViewById(R.id.btn_smart_fib);
+        btnFibSmart.setOnClickListener(this);
     }
 
     /**
@@ -48,12 +49,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         try {
             int x = Integer.valueOf(etX.getText().toString());
-            int y = Integer.valueOf(etY.getText().toString());
-            if (view == btnCalcDumb) {
-                tvResult.setText(String.valueOf(addThis(x, y)));
+            if (view == btnFibSmart) {
+                SmartCalc smartCalc = new SmartCalc();
+                tvResult.setText(String.valueOf(smartCalc.fibThis((long) x, false)));
             } else {
-
-                tvResult.setText(String.valueOf(smartCalc.addThis(x, y)));
+                int y = Integer.valueOf(etY.getText().toString());
+                if (view == btnCalcDumb) {
+                    tvResult.setText(String.valueOf(addThis(x, y)));
+                } else {
+                    SmartCalc smartCalc = new SmartCalc();
+                    tvResult.setText(String.valueOf(smartCalc.addThis(x, y)));
+                }
             }
         } catch (NumberFormatException e) {
             tvResult.setText("NumberFormatException");

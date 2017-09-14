@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.protech.demonative"
         minSdkVersion 19
@@ -24,6 +24,9 @@ android {
                 cppFlags "-frtti"
                 abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a'
             }
+            ndkBuild {
+                arguments "APP_DEPRECATED_HEADERS=true"
+            }
         }
     }
     buildTypes {
@@ -35,7 +38,6 @@ android {
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
-
         }
     }
 }
@@ -49,5 +51,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     debugCompile project(':smartcalc')
-    releaseCompile 'com.protech.mix:smartCalc:1.0b'
+    releaseCompile 'com.protech.mix:smartCalc:1.1'
 }
