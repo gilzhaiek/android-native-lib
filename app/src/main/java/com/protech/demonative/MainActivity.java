@@ -1,8 +1,6 @@
 package com.protech.demonative;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -10,10 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.protech.mix.SmartCalc;
-import com.protech.mix.SmartCalcListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        SmartCalcListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     static {
         System.loadLibrary("app-native");
     }
@@ -54,33 +50,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             int x = Integer.valueOf(etX.getText().toString());
             if (view == btnFibSmart) {
-                SmartCalc smartCalc = new SmartCalc(this);
+                SmartCalc smartCalc = new SmartCalc();
                 tvResult.setText(String.valueOf(smartCalc.fibThis((long) x, false)));
             } else {
                 int y = Integer.valueOf(etY.getText().toString());
                 if (view == btnCalcDumb) {
                     tvResult.setText(String.valueOf(addThis(x, y)));
                 } else {
-                    SmartCalc smartCalc = new SmartCalc(this);
+                    SmartCalc smartCalc = new SmartCalc();
                     tvResult.setText(String.valueOf(smartCalc.addThis(x, y)));
                 }
             }
         } catch (NumberFormatException e) {
             tvResult.setText("NumberFormatException");
         }
-    }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            tvResult.setText((String) msg.obj);
-        }
-    };
-
-    @Override
-    public void onFib(long result) {
-        Message msg = new Message();
-        msg.obj = String.valueOf(result);
-        handler.sendMessage(msg);
     }
 }
