@@ -66,7 +66,7 @@ uploadArchives {
     repositories.mavenDeployer {
         pom.groupId = 'com.protech.mix'
         pom.artifactId = 'smartCalc'
-        pom.version = '1.0b'
+        pom.version = '1.1'
 
         repository(url: "file://localhost/Users/gilzhaiek/.m2/repository")
     }

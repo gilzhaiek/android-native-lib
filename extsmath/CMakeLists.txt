@@ -10,12 +10,24 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+find_library( # Sets the name of the path variable.
+            log-lib
+
+            # Specifies the name of the NDK library that
+            # you want CMake to locate.
+            log )
+
+
 add_library( # Sets the name of the library.
-             extmath
+            extsmath
 
-             # Sets the library as a shared library.
-             SHARED
+            # Sets the library as a shared library.
+            SHARED
 
-             # Provides a relative path to your source file(s).
-             src/DumbCalc.cpp
-             src/ExtMath.cpp)
+            # Provides a relative path to your source file(s).
+            src/SuperCalc.cpp)
+
+# Specifies the target library.
+target_link_libraries(
+                        extsmath
+                        ${log-lib})
