@@ -1,15 +1,25 @@
+#include <pthread.h>
+
 #ifndef SUPER_CALC_H
 #define SUPER_CALC_H
 
+using namespace std;
+
 class SuperCalc {
 public :
-    SuperCalc();
+    SuperCalc(jobject instance, jobject smartCalcListener);
 
-    jlong fib(jlong n);
+    jlong fibR(jlong n);
 
-    jlong fibR(const jlong n);
+    jlong fibI(jlong n);
 
-    jlong fibI(const jlong n);
+private:
+    jobject instance;
+    jobject smartCalcListener;
+
+    static void *fibWorker(void *param);
+
+    pthread_t tPtr;
 };
 
 #endif

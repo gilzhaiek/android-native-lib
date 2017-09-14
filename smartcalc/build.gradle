@@ -30,6 +30,9 @@ android {
 
             externalNativeBuild {
                 cmake { cppFlags "-DDEBUG" }
+                ndkBuild {
+                    arguments "APP_DEPRECATED_HEADERS=true"
+                }
             }
         }
     }

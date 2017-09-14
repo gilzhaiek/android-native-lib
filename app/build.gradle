@@ -24,6 +24,9 @@ android {
                 cppFlags "-frtti"
                 abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a'
             }
+            ndkBuild {
+                arguments "APP_DEPRECATED_HEADERS=true"
+            }
         }
     }
     buildTypes {
@@ -35,7 +38,6 @@ android {
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
-
         }
     }
 }
