@@ -5,5 +5,7 @@ package com.protech.mix;
  */
 
 public interface SmartCalcListener {
+    void onAdd(long result);
+
     void onFib(long result);
 }

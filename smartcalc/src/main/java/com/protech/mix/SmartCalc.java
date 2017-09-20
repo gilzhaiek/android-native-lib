@@ -3,12 +3,22 @@ package com.protech.mix;
 import android.util.Log;
 
 public class SmartCalc {
+    static int instCount = 0;
+
+    private enum FibType {
+        FAST, SLOW
+    }
+
+    private long nativePtrSmartCalc;
+
     static {
         System.loadLibrary("smartcalc");
     }
 
     public SmartCalc() {
-        SmartCalcLogger smartCalcLogger = new SmartCalcLogger();
+        instCount++;
+
+        SmartCalcLogger smartCalcLogger = new SmartCalcLogger(instCount);
         this.init(smartCalcLogger);
         System.gc();
     }
@@ -27,7 +37,7 @@ public class SmartCalc {
 
     public native int addNative(int x, int y);
 
-    public native long fibNative(long x, boolean fast);
+    public native long fibNative(long x, FibType fibType);
 
     public static native long sFibNative(long x);
 
@@ -35,7 +45,7 @@ public class SmartCalc {
         return addNative(x, y);
     }
 
-    public long fibThis(long x, boolean fast) {
-        return sFibNative(x);
+    public long fibThis(long x) {
+        return fibNative(x, FibType.SLOW);
     }
 }

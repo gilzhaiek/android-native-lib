@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnCalcDumb, btnCalcSmart, btnFibSmart;
     EditText etX, etY;
 
+    SmartCalc smartCalcAdd = new SmartCalc();
+    SmartCalc smartCalcFib = new SmartCalc();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,15 +53,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             int x = Integer.valueOf(etX.getText().toString());
             if (view == btnFibSmart) {
-                SmartCalc smartCalc = new SmartCalc();
-                tvResult.setText(String.valueOf(smartCalc.fibThis((long) x, false)));
+                tvResult.setText(String.valueOf(smartCalcFib.fibThis((long) x)));
             } else {
                 int y = Integer.valueOf(etY.getText().toString());
                 if (view == btnCalcDumb) {
                     tvResult.setText(String.valueOf(addThis(x, y)));
                 } else {
-                    SmartCalc smartCalc = new SmartCalc();
-                    tvResult.setText(String.valueOf(smartCalc.addThis(x, y)));
+                    tvResult.setText(String.valueOf(smartCalcAdd.addThis(x, y)));
                 }
             }
         } catch (NumberFormatException e) {

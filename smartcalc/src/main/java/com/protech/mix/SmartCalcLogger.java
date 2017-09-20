@@ -7,9 +7,19 @@ import android.util.Log;
  */
 
 public class SmartCalcLogger implements SmartCalcListener {
+    final int instCnt;
+
+    public SmartCalcLogger(int instCnt) {
+        this.instCnt = instCnt;
+    }
+
+    @Override
+    public void onAdd(long result) {
+        Log.d("SmartCalcLogger[" + instCnt + "]", "onAdd(" + result + ")");
+    }
 
     @Override
     public void onFib(long result) {
-        Log.d("SmartCalcLogger", "onFib(" + result + ")");
+        Log.d("SmartCalcLogger[" + instCnt + "]", "onFib(" + result + ")");
     }
 }
