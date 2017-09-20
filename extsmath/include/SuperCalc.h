@@ -8,7 +8,7 @@ class SuperCalc {
 public :
     SuperCalc();
 
-    jlong fibR(jlong n);
+    jlong fibR(JNIEnv *env, jobject smartCalcInstance, jlong n);
 
     jlong fibI(jlong n);
 };

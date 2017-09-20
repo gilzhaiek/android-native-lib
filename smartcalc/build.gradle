@@ -29,7 +29,7 @@ android {
             jniDebuggable true
 
             externalNativeBuild {
-                cmake { cppFlags "-DDEBUG" }
+                cmake { cppFlags "-DDEBUG -DANDROID_STL=gnustl_shared" }
                 ndkBuild {
                     arguments "APP_DEPRECATED_HEADERS=true"
                 }
