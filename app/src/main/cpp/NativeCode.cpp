@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <string>
+#include <DumbCalc.h>
 
 extern "C"
 JNIEXPORT jstring JNICALL
@@ -9,3 +10,4 @@ Java_com_protech_demonative_MainActivity_stringFromJNI(
     std::string hello = "Hello from ProTech";
     return env->NewStringUTF(hello.c_str());
 }
+

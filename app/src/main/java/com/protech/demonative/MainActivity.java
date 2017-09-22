@@ -57,7 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 int y = Integer.valueOf(etY.getText().toString());
                 if (view == btnCalcDumb) {
-                    tvResult.setText(String.valueOf(addThis(x, y)));
+                    try {
+                        tvResult.setText(String.valueOf(addThis(x, y)));
+                    } catch (IllegalArgumentException e) {
+                        tvResult.setText(e.getMessage());
+                    }
                 } else {
                     tvResult.setText(String.valueOf(smartCalcAdd.addThis(x, y)));
                 }

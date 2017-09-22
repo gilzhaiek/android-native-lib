@@ -42,6 +42,3 @@ target_link_libraries(
                         smartcalc
                         extsmath)
 
-set(CMAKE_CXX_FLAGS
-   "${CMAKE_CXX_FLAGS} -std=c++0x -O2 -D_FORTIFY_SOURCE=2 -fstack-protector-all -fPIE")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pie")
