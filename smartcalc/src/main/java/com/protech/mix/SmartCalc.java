@@ -5,7 +5,7 @@ import android.util.Log;
 public class SmartCalc {
     static int instCount = 0;
 
-    private enum FibType {
+    public enum FibType {
         FAST, SLOW
     }
 
@@ -47,5 +47,13 @@ public class SmartCalc {
 
     public long fibThis(long x) {
         return fibNative(x, FibType.SLOW);
+    }
+
+    public void printEnum(String enumString) {
+        if (enumString.equals(FibType.SLOW.name())) {
+            Log.d("SmartCalc", "printMe(SLOW)");
+        } else if (enumString.equals(FibType.FAST.name())) {
+            Log.d("SmartCalc", "printMe(FAST)");
+        }
     }
 }

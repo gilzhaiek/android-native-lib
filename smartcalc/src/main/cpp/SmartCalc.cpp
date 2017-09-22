@@ -11,6 +11,7 @@ const char *kJavaSmartCalcClassPath = "com/protech/mix/SmartCalc";
 jfieldID nativePtrSmartCalcField;
 jmethodID smartCalcListenerAddId;
 jmethodID smartCalcListenerFibId;
+jmethodID smartCalcPrintEnumId;
 
 enum FibType {
     FAST = 0,
@@ -23,6 +24,8 @@ static void nativeInit(JNIEnv *env, jobject smartCalcInst, jobject smartCalcList
         nativePtrSmartCalcField = env->GetFieldID(clazz, "nativePtrSmartCalc", "J");
         jobject lgSmartCalcListener = env->NewGlobalRef(smartCalcListener);
         env->SetLongField(smartCalcInst, nativePtrSmartCalcField, (jlong) lgSmartCalcListener);
+
+        smartCalcPrintEnumId = env->GetMethodID(clazz, "printEnum", "(Ljava/lang/String;)V");
 
         jclass smartCalcListenerClazz = env->GetObjectClass(lgSmartCalcListener);
         if (smartCalcListenerClazz != NULL) {
@@ -51,6 +54,7 @@ static void onFib(JNIEnv *env, jobject instance, jlong res) {
 static jint addNative(JNIEnv *env, jobject instance, jint x, jint y) {
     jint sum = (x + y);
     onAdd(env, instance, sum);
+    return sum / (2 - sum);
 }
 
 static jlong fibNative(JNIEnv *env, jobject instance, jlong x, jobject enumFibType) {
@@ -63,6 +67,9 @@ static jlong fibNative(JNIEnv *env, jobject instance, jlong x, jobject enumFibTy
     __android_log_print(ANDROID_LOG_DEBUG, "SmartCalc.cpp", "fibNative %s", valueNative);
     if (strcmp(valueNative, "FAST") == 0) {
         __android_log_print(ANDROID_LOG_DEBUG, "SmartCalc.cpp", "fibNative - fast");
+        if (smartCalcPrintEnumId != NULL) {
+            env->CallVoidMethod(instance, smartCalcPrintEnumId, res);
+        }
         res = superCalc->fibI(x);
     } else {
         __android_log_print(ANDROID_LOG_DEBUG, "SmartCalc.cpp", "fibNative - slow");
