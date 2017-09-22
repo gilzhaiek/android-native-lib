@@ -48,6 +48,13 @@ static void onAdd(JNIEnv *env, jobject instance, jlong res) {
 static void onFib(JNIEnv *env, jobject instance, jlong res) {
     if (smartCalcListenerAddId != NULL) {
         env->CallVoidMethod(getSmartCalcListener(env, instance), smartCalcListenerFibId, res);
+
+        // Check for Java Exceptions
+        if (env->ExceptionCheck()) {
+            jthrowable throwable = env->ExceptionOccurred();
+            env->ExceptionDescribe(); /* optionally dump the stack trace */
+            env->ExceptionClear(); /* mark the exception as "handled" */
+        }
     }
 }
 
@@ -61,8 +68,15 @@ static jlong fibNative(JNIEnv *env, jobject instance, jlong x, jobject enumFibTy
     SuperCalc *superCalc = new SuperCalc();
     jlong res;
     jclass fibTypeClazz = env->GetObjectClass(enumFibType);
-    jmethodID getNameMethod = env->GetMethodID(fibTypeClazz, "name", "()Ljava/lang/String;");
-    jstring value = (jstring) env->CallObjectMethod(enumFibType, getNameMethod);
+    jmethodID nameMethodId = env->GetMethodID(fibTypeClazz, "name", "()Ljava/lang/String;");
+
+    jmethodID valuesMethodId = env->GetStaticMethodID(fibTypeClazz, "values",
+                                                      "()[Lcom/protech/mix/SmartCalc$FibType;");
+    jobjectArray values = (jobjectArray) env->CallStaticObjectMethod(fibTypeClazz, valuesMethodId);
+    jint len = env->GetArrayLength(values);
+    __android_log_print(ANDROID_LOG_DEBUG, "SmartCalc.cpp", "values %d", len);
+
+    jstring value = (jstring) env->CallObjectMethod(enumFibType, nameMethodId);
     const char *valueNative = env->GetStringUTFChars(value, 0);
     __android_log_print(ANDROID_LOG_DEBUG, "SmartCalc.cpp", "fibNative %s", valueNative);
     if (strcmp(valueNative, "FAST") == 0) {

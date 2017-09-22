@@ -46,6 +46,8 @@ public class SmartCalc {
     }
 
     public long fibThis(long x) {
+        FibType fibType = FibType.SLOW;
+        Log.d("",fibType.name());
         return fibNative(x, FibType.SLOW);
     }
 
@@ -57,3 +59,13 @@ public class SmartCalc {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

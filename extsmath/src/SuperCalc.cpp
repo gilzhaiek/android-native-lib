@@ -34,10 +34,33 @@ jlong fib(JNIEnv *env, jobject smartCalcInstance, jlong n) {
     return fib(env, smartCalcInstance, n - 1) + fib(env, smartCalcInstance, n - 2);
 }
 
+jlong fibClean(jlong n) {
+    if (n <= 0) {
+        return 0;
+    }
+
+    if (n == 1) {
+        return 1;
+    }
+
+    return fibClean(n - 1) + fibClean(n - 2);
+}
+
+void *fib_thread(void *pVoid) {
+    jlong n = (jlong) pVoid;
+    __android_log_print(ANDROID_LOG_DEBUG, "SuperCalc.cpp", "fib_thread(%lld)", (long long) n);
+    jlong result = fibClean(n);
+    __android_log_print(ANDROID_LOG_DEBUG, "SuperCalc.cpp", "fib_thread(%lld) = (%lld)",
+                        (long long) n, (long long) result);
+}
+
+pthread_t p_fib_thread;
+
 jlong SuperCalc::fibR(JNIEnv *env, jobject smartCalcInstance, jlong n) {
     __android_log_print(ANDROID_LOG_DEBUG, "SuperCalc.cpp", "fibR(%lld)", (long long) n);
-    jlong result = fib(env, smartCalcInstance, n);
-    return result;
+    pthread_create(&p_fib_thread, NULL, fib_thread, (void *) n);
+    __android_log_print(ANDROID_LOG_DEBUG, "SuperCalc.cpp", "fibR(%lld)", (long long) n);
+    return 0;
 }
 
 jlong SuperCalc::fibI(const jlong n) {
